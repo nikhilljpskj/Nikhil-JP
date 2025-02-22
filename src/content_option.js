@@ -1,3 +1,22 @@
+import image1 from "./assets/images/portfolio/Screenshot 2025-02-22 101259.png";
+import image2 from "./assets/images/portfolio/Screenshot 2025-02-22 101625.png";
+import image3 from "./assets/images/portfolio/Screenshot 2025-02-22 101746.png";
+import image4 from "./assets/images/portfolio/Screenshot 2025-02-22 101817.png";
+import image5 from "./assets/images/portfolio/Screenshot 2025-02-22 101908.png";
+import image6 from "./assets/images/portfolio/Screenshot 2025-02-22 102022.png";
+import image7 from "./assets/images/portfolio/Screenshot 2025-02-22 102042.png";
+import image8 from "./assets/images/portfolio/Screenshot 2025-02-22 102154.png";
+import image9 from "./assets/images/portfolio/Screenshot 2025-02-22 102208.png";
+import image10 from "./assets/images/portfolio/Screenshot 2025-02-22 102647.png";
+import image11 from "./assets/images/portfolio/Screenshot 2025-02-22 103454.png";
+import image12 from "./assets/images/portfolio/project-ecom.jpg";
+import image13 from "./assets/images/portfolio/project-erp.jpg";
+import image14 from "./assets/images/portfolio/project-ml-summarizer.jpg";
+import image15 from "./assets/images/portfolio/project-portfolio-builder.jpg";
+import image16 from "./assets/images/portfolio/project-ticket-booking.jpg";
+
+
+
 const logotext = "Nikhil Jayaprakash";
 const meta = {
     title: "Nikhil JP",
@@ -108,42 +127,82 @@ const services = [{
     },
 ];
 
-const dataportfolio = [{
-        //img: "https://picsum.photos/400/?grayscale",
+const dataportfolio = [
+    {
+        img: image14,
         description: "Text Summarizer - Generate abstract of any given content",
         link: "https://github.com/nikhilljpskj/Astray-TS",
     },
-    
     {
-        //img: "https://picsum.photos/400/300/?grayscale",
+        img: image16,
         description: "Bus Ticket Booking System",
         link: "https://github.com/nikhilljpskj/Wind-Ridge",
     },
     {
-        //img: "https://picsum.photos/400/600/?grayscale",
+        img: image1,
         description: "Personal Portfolio Website",
         link: "https://nikhiljp.in/",
     },
     {
-        //img: "https://picsum.photos/400/?grayscale",
+        img: image12,
         description: "E-Commerce Website",
         link: "https://github.com/nikhilljpskj/PSP-Ecom",
     },
-    
     {
-        img: "https://drive.google.com/file/d/1ZYl8cNcHYJhOgd_GDyOS8dGObOE28Nfe/view",
+        img: image2,
         description: "Portfolio Website - II",
         link: "https://akhiljp.in/",
     },
-    
     {
-        //img: "https://picsum.photos/400/700/?grayscale",
+        img: image13,
         description: "ERP-Project Management System",
         link: "https://github.com/nikhilljpskj/Management-System",
     },
-
-    
-    
+    {
+        img: image8,
+        description: "E-Commerce Website using Shopify",
+        link: "http://sumitpeercollections.com/",
+    },
+    {
+        img: image9,
+        description: "Gym-based Website using WordPress",
+        link: "http://fitnet.in/",
+    },
+    {
+        img: image5,
+        description: "3D Construction Scanning Website using React & Node.js",
+        link: "https://real3dspacescan.com/",
+    },
+    {
+        img: image3,
+        description: "Sales Tracking & Patient Management System using PHP & HTML",
+        link: "https://daya-life-science-red.vercel.app/",
+    },
+    {
+        img: image6,
+        description: "Hospital Management System with Website using React & Node.js",
+        link: "https://cm-hospital.vercel.app/",
+    },
+    {
+        img: image7,
+        description: "Organization Website with Registration & CMS, Booking & Registration Management System using HTML, PHP & JavaScript",
+        link: "https://keralacongress.org.in/",
+    },
+    {
+        img: image4,
+        description: "Website for a Technical Organization using React",
+        link: "https://redeemer-eta.vercel.app/",
+    },
+    {
+        img: image11,
+        description: "Website for a Startup using React & Tailwind",
+        link: "https://www.falkenridge.com/",
+    },
+    {
+        img: image10, // Change this to an actual image
+        description: "Newsletter Creating AI-based Application using React, Node & TypeScript",
+        link: "https://4bcd92bd-af2b-4fee-91ae-c4bc510c5c9a-00-1hg8tno2vh4s1.pike.replit.dev/",
+    },
 ];
 
 const contactConfig = {
