@@ -265,7 +265,7 @@ export default function HomePage() {
         title="Contact"
         description={
           <>
-            <p>Use the form or reach me directly — powered by EmailJS, no server required.</p>
+            <p>Use the form or reach me directly</p>
             <p>
               Prefer email?{' '}
               <a href={`mailto:${CONTACT.email}`} className="underline underline-offset-2 hover:text-slate-900">
