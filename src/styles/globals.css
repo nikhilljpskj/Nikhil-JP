@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Soft gradient background + subtle glass utilities */
+:root {
+  --ring: 0 0% 0%;
+}
+
+html, body {
+  @apply bg-white bg-gradient-to-br from-white via-slate-50 to-white text-slate-800 antialiased;
+}
+
+.glass {
+  @apply bg-white/60 backdrop-blur-md border border-white/50 shadow-xl/10;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-start via-brand-mid to-brand-end;
+}
+
+.gradient-border {
+  background: linear-gradient(90deg, rgba(79,70,229,.25), rgba(37,99,235,.25), rgba(14,165,233,.25));
+  padding: 1px;
+  border-radius: 1rem;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  @apply outline-none ring-2 ring-indigo-500/60 ring-offset-2 ring-offset-white;
+}
