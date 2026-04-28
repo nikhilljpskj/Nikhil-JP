@@ -25,6 +25,7 @@ export const PROJECTS: Project[] = [
     description:
       'Full-stack enterprise e-commerce platform with JWT auth, product and inventory CRUD, order processing, merchant dashboards, analytics, and CMS tools.',
     tech: ['Next.js 16', 'React 19', 'NestJS', 'Prisma', 'MariaDB'],
+    image: '/projects/global-ecom.jpg',
     tag: 'Web',
   },
   {
@@ -74,6 +75,13 @@ export const PROJECTS: Project[] = [
     href: 'https://redeemertechnologies.com/',
     repo: 'https://github.com/nikhilljpskj/Redeemer',
     image: '/projects/redeemer.png',
+  },
+  {
+    title: 'HRMS - Redeemer',
+    description:
+      'Multi-tenant HR platform with employee lifecycle tools, attendance, leave workflows, payroll automation, payslips, RBAC, audit trails, and reports.',
+    tech: ['React 18', 'Express', 'MySQL', 'Redis', 'Tailwind'],
+    tag: 'Web',
   },
   {
     title: 'Holter Monitoring System',
