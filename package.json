@@ -19,7 +19,11 @@
     "classnames": "^2.5.1",
     "framer-motion": "^11.2.6",
     "lucide-react": "^0.441.0",
+<<<<<<< HEAD
     "next": "^16.2.4",
+=======
+    "next": "15.5.9",
+>>>>>>> a5e0d209192109f482b80608a50a22741f909412
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.52.1",
