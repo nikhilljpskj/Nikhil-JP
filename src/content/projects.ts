@@ -33,6 +33,14 @@ export const PROJECTS: Project[] = [
     image: '/projects/sales.png',
   },
   {
+    title: 'Field Tracking System',
+    description:
+      'Enterprise field-force platform for geo-fenced attendance, task approvals, client visits, travel allowances, HRMS, payroll, and admin reporting.',
+    tech: ['PHP MVC', 'MySQL', 'JavaScript', 'HERE Maps', 'PDF/CSV'],
+    tag: 'Web',
+    image: '/projects/Field-track.jpg',
+  },
+  {
     title: 'OperonX',
     description:
       'Integrated ERP + CRM with lead tracking and social capture. Next.js front-end with Node or PHP alternates for flexible deployment environments.',
