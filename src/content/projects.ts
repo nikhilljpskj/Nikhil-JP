@@ -13,6 +13,21 @@ export const PROJECTS: Project[] = [
     image: '/projects/mobiforce.png',
   },
   {
+    title: 'VowDreams',
+    description:
+      'Digital wedding invitation and event platform with premium invitation pages, custom event websites, RSVP tracking, and responsive sharing.',
+    tech: ['Next.js', 'React 19', 'TypeScript', 'Bootstrap', 'ESLint'],
+    tag: 'Web',
+    href: 'https://vowdreams.com',
+  },
+  {
+    title: 'Global-Ecom',
+    description:
+      'Full-stack enterprise e-commerce platform with JWT auth, product and inventory CRUD, order processing, merchant dashboards, analytics, and CMS tools.',
+    tech: ['Next.js 16', 'React 19', 'NestJS', 'Prisma', 'MariaDB'],
+    tag: 'Web',
+  },
+  {
     title: 'Kerala Congress (J)',
     description:
       'Official party website with membership registration and people management modules. PHP stack for simplicity and fast publishing.',
@@ -59,6 +74,14 @@ export const PROJECTS: Project[] = [
     href: 'https://redeemertechnologies.com/',
     repo: 'https://github.com/nikhilljpskj/Redeemer',
     image: '/projects/redeemer.png',
+  },
+  {
+    title: 'Holter Monitoring System',
+    description:
+      'Production-ready medical platform for patient enrollment, hospital portals, OTP-gated report access, secure PDF delivery, and role-based workflows.',
+    tech: ['PHP 8', 'MySQL', 'Bootstrap 5', 'Vanilla JS', 'RBAC'],
+    tag: 'Web',
+    image: '/projects/holter.png',
   },
   {
     title: '3D Realspace Scans',
