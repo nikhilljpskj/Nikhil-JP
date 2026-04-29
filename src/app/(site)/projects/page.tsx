@@ -9,11 +9,13 @@ import {
   ExternalLink,
   Filter,
   Github,
+  Layers3,
   MonitorPlay,
   Sparkles,
+  X,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const TAGS = ['All', 'Web', 'ML', 'Tools'] as const;
 
@@ -21,15 +23,19 @@ function cleanUrl(url: string) {
   return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 }
 
-function ProjectFrame({ project, large = false }: { project: Project; large?: boolean }) {
-  const aspect = large ? 'aspect-[16/9] lg:aspect-[16/8.6]' : 'aspect-[16/10]';
+function shortDescription(text: string) {
+  return text.split('.')[0] || text;
+}
+
+function ProjectPreview({ project, compact = false }: { project: Project; compact?: boolean }) {
+  const aspect = compact ? 'aspect-[4/3]' : 'aspect-[16/9]';
 
   if (project.href) {
     return (
       <div
-        className={`relative ${aspect} overflow-hidden rounded-[1.25rem] border border-slate-200 bg-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.18)]`}
+        className={`relative ${aspect} overflow-hidden rounded-2xl border border-slate-800 bg-slate-950`}
       >
-        <div className="absolute left-0 right-0 top-0 z-10 flex h-9 items-center gap-2 border-b border-white/10 bg-slate-950/92 px-3 text-[11px] text-slate-300 backdrop-blur">
+        <div className="absolute left-0 right-0 top-0 z-10 flex h-9 items-center gap-2 border-b border-white/10 bg-slate-950/95 px-3 text-[11px] text-slate-300 backdrop-blur">
           <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -41,7 +47,7 @@ function ProjectFrame({ project, large = false }: { project: Project; large?: bo
         <iframe
           src={project.href}
           title={`${project.title} live preview`}
-          loading={large ? 'eager' : 'lazy'}
+          loading={compact ? 'lazy' : 'eager'}
           scrolling="no"
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           referrerPolicy="no-referrer-when-downgrade"
@@ -53,34 +59,25 @@ function ProjectFrame({ project, large = false }: { project: Project; large?: bo
 
   return (
     <div
-      className={`relative ${aspect} overflow-hidden rounded-[1.25rem] border border-slate-200 bg-slate-100 shadow-[0_18px_55px_rgba(15,23,42,0.10)]`}
+      className={`relative ${aspect} overflow-hidden rounded-2xl border border-slate-200 bg-slate-100`}
     >
       {project.image ? (
         <Image
           src={project.image}
           alt={`${project.title} preview`}
           fill
-          sizes={large ? '(min-width:1024px) 58vw, 100vw' : '(min-width:1024px) 33vw, 100vw'}
+          sizes={compact ? '9rem' : '(min-width:1024px) 64vw, 100vw'}
           className="object-cover"
-          priority={large}
+          priority={!compact}
         />
       ) : (
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,#f8fafc,#dbeafe_52%,#f1f5f9)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#f8fafc,#dbeafe_48%,#eef2ff)]" />
       )}
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string | number }) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 shadow-[0_12px_35px_rgba(15,23,42,0.06)] backdrop-blur">
-      <div className="text-2xl font-semibold tracking-tight text-slate-950">{value}</div>
-      <div className="mt-1 text-xs font-medium uppercase text-slate-500">{label}</div>
-    </div>
-  );
-}
-
-function ProjectLinks({ project }: { project: Project }) {
+function ProjectActions({ project }: { project: Project }) {
   return (
     <div className="flex flex-wrap gap-2">
       {project.href && (
@@ -88,9 +85,9 @@ function ProjectLinks({ project }: { project: Project }) {
           href={project.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-indigo-600"
+          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-indigo-50 hover:text-indigo-700"
         >
-          Live <ArrowUpRight size={15} />
+          Open live <ArrowUpRight size={15} />
         </a>
       )}
       {project.repo && (
@@ -98,115 +95,152 @@ function ProjectLinks({ project }: { project: Project }) {
           href={project.repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 transition hover:border-indigo-200 hover:text-indigo-600"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
         >
-          <Github size={15} /> Code
+          <Github size={15} /> Source
         </a>
       )}
     </div>
   );
 }
 
-function CompactProject({ project, index }: { project: Project; index: number }) {
+function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [onClose]);
+
   return (
-    <article className="group grid gap-5 rounded-[1.5rem] border border-slate-200 bg-white/82 p-4 shadow-[0_14px_45px_rgba(15,23,42,0.07)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)] lg:grid-cols-[0.95fr_1.1fr]">
-      <ProjectFrame project={project} />
-      <div className="flex min-w-0 flex-col justify-between">
-        <div>
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div>
-                <h3 className="text-xl font-semibold tracking-tight text-slate-950">
-                  {project.title}
-                </h3>
-                <p className="mt-1 text-xs font-medium uppercase text-slate-400">
-                  {project.href ? 'Live build' : 'Project archive'}
-                </p>
+    <div
+      className="fixed inset-0 z-[80] bg-slate-950/70 p-3 backdrop-blur-md md:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+      onMouseDown={onClose}
+    >
+      <div
+        className="mx-auto flex max-h-[calc(100vh-1.5rem)] max-w-7xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 shadow-[0_35px_120px_rgba(2,6,23,0.55)] md:max-h-[calc(100vh-3rem)]"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4 md:px-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">
+              {project.href ? 'Live project' : 'Project detail'}
+            </p>
+            <h2
+              id="project-modal-title"
+              className="mt-1 text-2xl font-semibold tracking-tight text-white md:text-4xl"
+            >
+              {project.title}
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close project details"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white transition hover:bg-white/15"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[1.45fr_0.8fr]">
+          <div className="bg-slate-900/70 p-3 md:p-5">
+            <ProjectPreview project={project} />
+          </div>
+
+          <aside className="space-y-6 border-t border-white/10 p-5 md:p-6 lg:border-l lg:border-t-0">
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-400">
+                <Layers3 size={16} /> Details
+              </div>
+              <p className="mt-3 text-base leading-8 text-slate-200">{project.description}</p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-400">
+                <Code2 size={16} /> Tech Used
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {project.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm font-medium text-slate-100"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
-              {project.tag}
-            </span>
-          </div>
-          <p className="mt-4 text-sm leading-6 text-slate-600">{project.description}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.tech.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="mt-5">
-          <ProjectLinks project={project} />
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Category
+              </div>
+              <div className="mt-2 text-lg font-semibold text-white">{project.tag}</div>
+              {project.href && (
+                <div className="mt-1 truncate text-sm text-slate-400">{cleanUrl(project.href)}</div>
+              )}
+            </div>
+
+            <ProjectActions project={project} />
+          </aside>
         </div>
       </div>
-    </article>
+    </div>
   );
 }
 
 export default function ProjectsPage() {
   const [tag, setTag] = useState<(typeof TAGS)[number]>('All');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const items = useMemo(
     () => (tag === 'All' ? PROJECTS : PROJECTS.filter((project) => project.tag === tag)),
     [tag],
   );
-  const featured = items.find((project) => project.href) ?? items[0];
-  const remaining = items.filter((project) => project.title !== featured?.title);
+
   const liveCount = PROJECTS.filter((project) => project.href).length;
 
   return (
     <Container>
       <main className="py-12 md:py-16">
-        <section className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/82 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.10)] backdrop-blur md:p-8">
-          <div className="grid gap-8 xl:grid-cols-[0.8fr_1.2fr] xl:items-end">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase text-indigo-700">
-                <Sparkles size={14} /> Selected work
-              </div>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl">
-                Projects built for launches, teams, and operations.
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
-                A portfolio wall with live, scroll-free website previews for public builds and
-                refined case-study cards for private/internal systems.
-              </p>
-
-              <div className="mt-7 grid grid-cols-3 gap-3">
-                <Stat label="Total" value={PROJECTS.length} />
-                <Stat label="Live" value={liveCount} />
-                <Stat label="Stacks" value="12+" />
-              </div>
+        <section className="grid gap-8 border-b border-slate-200 pb-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase text-indigo-700">
+              <Sparkles size={14} /> Work index
             </div>
-
-            {featured && (
-              <div className="rounded-[1.6rem] bg-slate-950 p-3 shadow-[0_28px_90px_rgba(15,23,42,0.25)]">
-                <ProjectFrame project={featured} large />
-                <div className="flex flex-col gap-4 px-2 pb-2 pt-4 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <p className="text-xs font-medium uppercase text-slate-400">Featured preview</p>
-                    <h2 className="mt-1 text-2xl font-semibold text-white">{featured.title}</h2>
-                  </div>
-                  <ProjectLinks project={featured} />
-                </div>
+            <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl">
+              A sharp project index with deeper views on demand.
+            </h1>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              ['Projects', PROJECTS.length],
+              ['Live sites', liveCount],
+              ['Categories', TAGS.length - 1],
+            ].map(([label, value]) => (
+              <div key={label} className="border-l border-slate-200 pl-4">
+                <div className="text-3xl font-semibold tracking-tight text-slate-950">{value}</div>
+                <div className="mt-1 text-xs font-semibold uppercase text-slate-500">{label}</div>
               </div>
-            )}
+            ))}
           </div>
         </section>
 
-        <section className="sticky top-[73px] z-20 mt-6 rounded-2xl border border-slate-200 bg-white/88 p-3 shadow-[0_16px_50px_rgba(15,23,42,0.08)] backdrop-blur">
+        <section className="sticky top-[73px] z-20 mt-6 border-y border-slate-200 bg-white/90 py-3 backdrop-blur">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-slate-950 text-white">
-                <Filter size={17} />
-              </span>
-              Showing {items.length} project{items.length === 1 ? '' : 's'}
+              <Filter size={17} /> Showing {items.length} project{items.length === 1 ? '' : 's'}
             </div>
             <div className="flex flex-wrap gap-2">
               {TAGS.map((item) => (
@@ -216,7 +250,7 @@ export default function ProjectsPage() {
                   onClick={() => setTag(item)}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     tag === item
-                      ? 'bg-slate-950 text-white shadow-[0_12px_30px_rgba(15,23,42,0.18)]'
+                      ? 'bg-slate-950 text-white'
                       : 'border border-slate-200 bg-white text-slate-700 hover:border-indigo-200 hover:text-indigo-600'
                   }`}
                 >
@@ -227,33 +261,61 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        <section className="mt-7 grid gap-6">
-          {remaining.length > 0 ? (
-            remaining.map((project, index) => (
-              <CompactProject key={project.title} project={project} index={index} />
-            ))
-          ) : (
-            <div className="rounded-2xl border border-slate-200 bg-white/80 p-8 text-center text-slate-600">
-              No projects found in this category.
-            </div>
-          )}
+        <section className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+          {items.map((project, index) => (
+            <button
+              key={project.title}
+              type="button"
+              onClick={() => setSelectedProject(project)}
+              className="group grid w-full gap-4 py-5 text-left transition hover:bg-slate-50/80 md:grid-cols-[4.5rem_1fr_auto] md:items-center md:px-3"
+            >
+              <div className="flex items-center gap-3 md:block">
+                <span className="text-sm font-semibold text-slate-400">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="rounded-full border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 md:mt-3 md:inline-flex">
+                  {project.tag}
+                </span>
+              </div>
+
+              <div className="min-w-0">
+                <h2 className="text-2xl font-semibold tracking-tight text-slate-950 transition group-hover:text-indigo-600">
+                  {project.title}
+                </h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                  {shortDescription(project.description)}.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 md:justify-end">
+                <span className="hidden max-w-[14rem] truncate text-sm text-slate-400 lg:block">
+                  {project.href ? cleanUrl(project.href) : project.tech.slice(0, 2).join(' / ')}
+                </span>
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition group-hover:border-indigo-200 group-hover:bg-indigo-50 group-hover:text-indigo-600">
+                  {project.href ? <MonitorPlay size={18} /> : <ArrowUpRight size={18} />}
+                </span>
+              </div>
+            </button>
+          ))}
         </section>
 
-        <section className="mt-8 grid gap-4 rounded-[1.5rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-[0_24px_80px_rgba(15,23,42,0.16)] md:grid-cols-[1fr_auto] md:items-center">
+        <section className="mt-8 flex flex-col gap-3 border border-slate-200 bg-slate-950 px-5 py-4 text-white md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-300">
-              <MonitorPlay size={17} /> Live previews are embedded without internal scrolling.
-            </div>
-            <p className="mt-2 text-sm leading-6 text-slate-400">
-              Use the Live buttons to open the full websites when you want to inspect the complete
-              page.
+            <div className="text-sm font-semibold">Open any project for the full preview.</div>
+            <p className="mt-1 text-sm text-slate-400">
+              Live website embeds are scroll-free; use the action buttons in the popup for the
+              complete site.
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white">
-            <Code2 size={16} /> Production portfolio
+          <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-200">
+            <Code2 size={16} /> Details on click
           </div>
         </section>
       </main>
+
+      {selectedProject && (
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      )}
     </Container>
   );
 }

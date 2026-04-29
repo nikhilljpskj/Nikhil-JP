@@ -34,7 +34,7 @@ export const PROJECTS: Project[] = [
       'Official party website with membership registration and people management modules. PHP stack for simplicity and fast publishing.',
     tech: ['PHP', 'HTML', 'Tailwind'],
     tag: 'Web',
-    href: 'https://kerala-congress.vercel.app/',
+    href: 'https://keralacongress.org.in/',
     repo: 'https://github.com/nikhilljpskj/Kerala-Congress',
     image: '/projects/kc.png',
   },
