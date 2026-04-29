@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
     title: 'Global-Ecom',
     description:
       'Full-stack enterprise e-commerce platform with JWT auth, product and inventory CRUD, order processing, merchant dashboards, analytics, and CMS tools.',
-    tech: ['Next.js 16', 'React 19', 'NestJS', 'Prisma', 'MariaDB'],
+    tech: ['Next.js 16', 'React 19', 'NestJS', 'Prisma', 'MySQL'],
     image: '/projects/global-ecom.jpg',
     tag: 'Web',
   },
