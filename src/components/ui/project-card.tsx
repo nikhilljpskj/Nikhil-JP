@@ -30,9 +30,10 @@ function ProjectPreview({ p }: { p: Project }) {
           src={p.href}
           title={`${p.title} live preview`}
           loading="lazy"
+          scrolling="no"
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           referrerPolicy="no-referrer-when-downgrade"
-          className="h-full w-full border-0 pt-8"
+          className="pointer-events-none h-full w-full overflow-hidden border-0 pt-8"
         />
       </div>
     );
