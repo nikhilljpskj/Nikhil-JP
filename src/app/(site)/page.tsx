@@ -1,7 +1,6 @@
 import Container from '@/components/ui/container';
 import Section from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
-import SocialChips from '@/components/ui/social-chips';
 import Link from 'next/link';
 import { CONTACT } from '@/lib/constants';
 import { STACK } from '@/content/skills';
@@ -14,10 +13,8 @@ import ContactForm from '@/components/contact-form';
 import CompanyMarquee from '@/components/ui/company-marquee';
 import { CLIENTS } from '@/content/clients';
 import Image from 'next/image';
-import RoleTicker from '@/components/ui/role-ticker';
 import RoleTyper from '@/components/ui/role-typer';
 import { FileDown, Linkedin, Github, Mail, Phone } from 'lucide-react';
-
 
 export default function HomePage() {
   const notable = PROJECTS.slice(0, 3);
@@ -33,8 +30,9 @@ export default function HomePage() {
         description={
           <>
             <p className="leading-8">
-              I help teams ship reliable systems faster with clean architecture, sharp tooling, and pragmatic mentoring.
-              Strategy meets engineering craft across <strong>React/Next</strong>, <strong>Node/Nest</strong>,{' '}
+              I help teams ship reliable systems faster with clean architecture, sharp tooling, and
+              pragmatic mentoring. Strategy meets engineering craft across{' '}
+              <strong>React/Next</strong>, <strong>Node/Nest</strong>,{' '}
               <strong>Python/Django</strong>, and <strong>PHP/Laravel</strong>.
             </p>
 
@@ -131,8 +129,6 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-
-
           </>
         }
         side={
@@ -150,8 +146,7 @@ export default function HomePage() {
             </div>
           </div>
         }
-      >
-      </Section>
+      ></Section>
 
       {/* COMPANIES MARQUEE */}
       <Section
@@ -207,7 +202,9 @@ export default function HomePage() {
                     <h3 className="text-lg font-semibold">{s.title}</h3>
                     <p className="text-slate-600">{s.desc}</p>
                     <ul className="mt-3 list-disc pl-5 text-sm text-slate-700">
-                      {s.bullets.map((b) => <li key={b}>{b}</li>)}
+                      {s.bullets.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -225,22 +222,34 @@ export default function HomePage() {
       >
         <div className="grid gap-6">
           <StackGroup title="Frontend">
-            {STACK.frontend.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.frontend.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
           <StackGroup title="Backend & Frameworks">
-            {STACK.backend.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.backend.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
           <StackGroup title="Languages">
-            {STACK.languages.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.languages.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
           <StackGroup title="Databases & Caches">
-            {STACK.data.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.data.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
           <StackGroup title="DevOps • Hosting • Tooling">
-            {STACK.devops.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.devops.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
           <StackGroup title="Messaging & Email">
-            {STACK.messaging.map((t) => <TechBadge key={t.name} name={t.name} logo={t.logo} />)}
+            {STACK.messaging.map((t) => (
+              <TechBadge key={t.name} name={t.name} logo={t.logo} />
+            ))}
           </StackGroup>
         </div>
       </Section>
@@ -252,10 +261,14 @@ export default function HomePage() {
         description="A few highlights. Many more under the hood."
       >
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {notable.map((p) => <ProjectCard key={p.title} p={p} />)}
+          {notable.map((p) => (
+            <ProjectCard key={p.title} p={p} />
+          ))}
         </div>
         <div className="mt-6">
-          <Link href="/projects"><Button variant="outline">More projects</Button></Link>
+          <Link href="/projects">
+            <Button variant="outline">More projects</Button>
+          </Link>
         </div>
       </Section>
 
@@ -268,7 +281,10 @@ export default function HomePage() {
             <p>Use the form or reach me directly</p>
             <p>
               Prefer email?{' '}
-              <a href={`mailto:${CONTACT.email}`} className="underline underline-offset-2 hover:text-slate-900">
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="underline underline-offset-2 hover:text-slate-900"
+              >
                 {CONTACT.email}
               </a>
             </p>
@@ -287,7 +303,9 @@ function StackGroup({ title, children }: { title: string; children: React.ReactN
     <div className="relative rounded-2xl bg-gradient-to-r from-indigo-600/15 via-blue-600/15 to-sky-500/15 p-[1.5px]">
       <div className="rounded-2xl border border-white/60 bg-white/85 p-5 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.06)]">
         <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold uppercase tracking-wider text-slate-600">{title}</div>
+          <div className="text-sm font-semibold uppercase tracking-wider text-slate-600">
+            {title}
+          </div>
           <div className="h-px w-24 bg-gradient-to-r from-indigo-500/30 via-blue-500/30 to-sky-400/30" />
         </div>
         <div className="mt-3 flex flex-wrap gap-2">{children}</div>

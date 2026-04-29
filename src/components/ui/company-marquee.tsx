@@ -1,25 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { CSSProperties, useMemo } from 'react';
 
 type MarqueeItem = {
   name: string;
-  logo: string;     // /public/companies/*.svg|png
+  logo: string; // /public/companies/*.svg|png
   url?: string;
 };
 
 export default function CompanyMarquee({
   items,
-  itemsPerView = 6,   // set to 5 if you prefer
-  speed = 26,         // seconds per full loop
-  gap = 28,           // px gap between items
+  itemsPerView = 6, // set to 5 if you prefer
+  speed = 26, // seconds per full loop
+  gap = 28, // px gap between items
   grayscaleAtRest = true,
 }: {
   items: MarqueeItem[];
   itemsPerView?: 5 | 6;
   speed?: number;
-  gap?: number;                 // in px
+  gap?: number; // in px
   grayscaleAtRest?: boolean;
 }) {
   // Duplicate once for seamless scroll
@@ -29,12 +29,14 @@ export default function CompanyMarquee({
     <div
       className="group relative overflow-hidden"
       aria-label="Company logos marquee"
-      style={{
-        // Container queries allow us to size items as a fraction of the container width
-        // so we always show exactly itemsPerView at a time.
-        // (Supported by all modern browsers.)
-        containerType: 'inline-size' as any,
-      }}
+      style={
+        {
+          // Container queries allow us to size items as a fraction of the container width
+          // so we always show exactly itemsPerView at a time.
+          // (Supported by all modern browsers.)
+          containerType: 'inline-size',
+        } as CSSProperties
+      }
     >
       {/* Soft edge fade */}
       <div

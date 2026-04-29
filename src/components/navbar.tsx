@@ -11,11 +11,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Close on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   // Close on Esc
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -93,6 +88,7 @@ export default function Navbar() {
                 <li key={n.href}>
                   <Link
                     href={n.href}
+                    onClick={() => setOpen(false)}
                     className={`block rounded-xl px-3 py-2 text-base transition hover:bg-white
                                 ${active ? 'text-slate-950' : 'text-slate-700'}`}
                   >
@@ -102,7 +98,7 @@ export default function Navbar() {
               );
             })}
             <li className="pt-2">
-              <Link href="/contact" className="block">
+              <Link href="/contact" className="block" onClick={() => setOpen(false)}>
                 <Button className="w-full" variant="primary" size="md">
                   Let’s Build Together
                 </Button>

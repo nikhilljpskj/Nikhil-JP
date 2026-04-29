@@ -23,6 +23,37 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
+type EmailJsError = {
+  text?: string;
+  message?: string;
+};
+
+function getErrorMessage(error: unknown) {
+  if (typeof error === 'object' && error !== null) {
+    const { text, message } = error as EmailJsError;
+    return text || message;
+  }
+  return undefined;
+}
+
+function SocialLink({ href, label, Icon }: { href: string; label: string; Icon: LucideIcon }) {
+  return (
+    <span className="rounded-2xl bg-gradient-to-r from-indigo-600/20 via-blue-600/20 to-sky-500/20 p-[1px]">
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={label}
+        title={label}
+        className="inline-flex items-center gap-2 rounded-2xl border border-white/60 bg-white/80 p-2 text-sm text-slate-700 backdrop-blur transition hover:-translate-y-[1px] hover:shadow-[0_10px_30px_rgba(2,6,23,0.06)] md:px-3 md:py-1.5"
+      >
+        <Icon className="h-5 w-5 md:h-4 md:w-4" />
+        <span className="hidden md:inline">{label}</span>
+      </a>
+    </span>
+  );
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'ok' | 'error' | 'submitting'>('idle');
   const [note, setNote] = useState('');
@@ -31,7 +62,12 @@ export default function ContactForm() {
     emailjs.init(EMAILJS.publicKey);
   }, []);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
@@ -47,9 +83,9 @@ export default function ContactForm() {
       setStatus('ok');
       setNote('Message received! I’ll respond soon.');
       reset();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setStatus('error');
-      setNote(e?.text || e?.message || 'Something went wrong. Please try again.');
+      setNote(getErrorMessage(e) || 'Something went wrong. Please try again.');
     }
   };
 
@@ -58,35 +94,6 @@ export default function ContactForm() {
     setNote('Copied!');
     setTimeout(() => setNote(''), 1500);
   };
-
-  const SocialLink = ({
-    href,
-    label,
-    Icon,
-  }: {
-    href: string;
-    label: string;
-    Icon: LucideIcon;
-  }) => (
-    <span className="rounded-2xl bg-gradient-to-r from-indigo-600/20 via-blue-600/20 to-sky-500/20 p-[1px]">
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={label}
-        title={label}
-        className="inline-flex items-center gap-2 rounded-2xl border border-white/60 bg-white/80
-                  p-2 md:px-3 md:py-1.5 text-sm text-slate-700 backdrop-blur
-                  transition hover:-translate-y-[1px] hover:shadow-[0_10px_30px_rgba(2,6,23,0.06)]"
-      >
-        {/* Icon scales: larger on mobile, slightly smaller on md+ */}
-        <Icon className="h-5 w-5 md:h-4 md:w-4" />
-        {/* Text hidden on mobile, visible from md+ */}
-        <span className="hidden md:inline">{label}</span>
-      </a>
-    </span>
-  );
-
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
@@ -165,13 +172,19 @@ export default function ContactForm() {
       {/* Direct + Social card */}
       <div className="space-y-6">
         <div className="rounded-2xl border border-white/60 bg-white/80 p-6 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.06)]">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Direct</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Direct
+          </div>
           <div className="mt-3 space-y-3 text-[15px] leading-6 text-slate-700">
             <div className="flex items-center justify-between">
               <a className="hover:underline underline-offset-2" href={`mailto:${CONTACT.email}`}>
                 {CONTACT.email}
               </a>
-              <button aria-label="Copy email" onClick={() => copy(CONTACT.email)} className="text-slate-600 hover:text-slate-800">
+              <button
+                aria-label="Copy email"
+                onClick={() => copy(CONTACT.email)}
+                className="text-slate-600 hover:text-slate-800"
+              >
                 <Copy size={16} />
               </button>
             </div>
@@ -179,24 +192,36 @@ export default function ContactForm() {
               <a className="hover:underline underline-offset-2" href={`tel:${CONTACT.phone}`}>
                 {CONTACT.phone}
               </a>
-              <button aria-label="Copy phone" onClick={() => copy(CONTACT.phone)} className="text-slate-600 hover:text-slate-800">
+              <button
+                aria-label="Copy phone"
+                onClick={() => copy(CONTACT.phone)}
+                className="text-slate-600 hover:text-slate-800"
+              >
                 <Copy size={16} />
               </button>
             </div>
             <div className="text-slate-600">{CONTACT.location}</div>
-            
           </div>
         </div>
 
         <div className="rounded-2xl border border-white/60 bg-white/80 p-6 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.06)]">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Social</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Social
+          </div>
           <div className="mt-3 flex flex-wrap items-center gap-2 md:gap-3">
             <SocialLink href={CONTACT.linkedin} label="LinkedIn" Icon={Linkedin} />
             <SocialLink href={CONTACT.github} label="GitHub" Icon={Github} />
-            <SocialLink href="https://www.hackerrank.com/profile/nikhiljp_skj" label="HackerRank" Icon={Code2} />
-            <SocialLink href="https://leetcode.com/u/nikhiljp/" label="LeetCode" Icon={SquareCode} />
+            <SocialLink
+              href="https://www.hackerrank.com/profile/nikhiljp_skj"
+              label="HackerRank"
+              Icon={Code2}
+            />
+            <SocialLink
+              href="https://leetcode.com/u/nikhiljp/"
+              label="LeetCode"
+              Icon={SquareCode}
+            />
           </div>
-
         </div>
       </div>
     </div>

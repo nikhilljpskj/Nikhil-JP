@@ -5,9 +5,9 @@ import { useEffect, useMemo, useState } from 'react';
 type Props = {
   roles: string[];
   className?: string;
-  typeMs?: number;    // typing speed (ms per char)
-  deleteMs?: number;  // deletion speed (ms per char)
-  holdMs?: number;    // pause when word is complete
+  typeMs?: number; // typing speed (ms per char)
+  deleteMs?: number; // deletion speed (ms per char)
+  holdMs?: number; // pause when word is complete
 };
 
 // exactly two gradients: blue & red families
@@ -31,7 +31,7 @@ export default function RoleTyper({
   const displayed = useMemo(() => current.slice(0, i), [current, i]);
 
   useEffect(() => {
-    let t: any;
+    let t: ReturnType<typeof setTimeout>;
     if (!deleting && i < current.length) {
       t = setTimeout(() => setI(i + 1), typeMs);
     } else if (!deleting && i === current.length) {
@@ -39,8 +39,10 @@ export default function RoleTyper({
     } else if (deleting && i > 0) {
       t = setTimeout(() => setI(i - 1), deleteMs);
     } else if (deleting && i === 0) {
-      setDeleting(false);
-      setR((r + 1) % roles.length);
+      t = setTimeout(() => {
+        setDeleting(false);
+        setR((r + 1) % roles.length);
+      }, 0);
     }
     return () => clearTimeout(t);
   }, [i, deleting, current, r, roles.length, typeMs, deleteMs, holdMs]);

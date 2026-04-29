@@ -18,7 +18,7 @@ import {
   Github,
   Code2,
   SquareCode,
-  type LucideIcon,          // ✅ import the LucideIcon type
+  type LucideIcon, // ✅ import the LucideIcon type
 } from 'lucide-react';
 
 const EMAILJS = {
@@ -34,6 +34,35 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
+type EmailJsError = {
+  text?: string;
+  message?: string;
+};
+
+function getErrorMessage(error: unknown) {
+  if (typeof error === 'object' && error !== null) {
+    const { text, message } = error as EmailJsError;
+    return text || message;
+  }
+  return undefined;
+}
+
+function SocialLink({ href, label, Icon }: { href: string; label: string; Icon: LucideIcon }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      title={label}
+      className="inline-flex items-center gap-2 rounded-2xl border border-white/60 bg-white/80 p-2 text-sm text-slate-700 backdrop-blur transition hover:-translate-y-[1px] hover:shadow-[0_10px_30px_rgba(2,6,23,0.06)] md:px-3 md:py-1.5"
+    >
+      <Icon className="h-5 w-5 md:h-4 md:w-4" />
+      <span className="hidden md:inline">{label}</span>
+    </a>
+  );
+}
+
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'ok' | 'error' | 'submitting'>('idle');
   const [note, setNote] = useState<string>('');
@@ -42,7 +71,12 @@ export default function ContactPage() {
     emailjs.init(EMAILJS.publicKey);
   }, []);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
@@ -58,9 +92,9 @@ export default function ContactPage() {
       setStatus('ok');
       setNote('Message received! I’ll respond soon.');
       reset();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setStatus('error');
-      setNote(e?.text || e?.message || 'Something went wrong. Please try again.');
+      setNote(getErrorMessage(e) || 'Something went wrong. Please try again.');
     }
   };
 
@@ -70,42 +104,9 @@ export default function ContactPage() {
     setTimeout(() => setNote(''), 1500);
   };
 
-  // ✅ Use LucideIcon so size can be string|number and ref typing matches
-  const SocialLink = ({
-    href,
-    label,
-    Icon,
-  }: {
-    href: string;
-    label: string;
-    Icon: LucideIcon;
-  }) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      title={label}
-      className="
-        inline-flex items-center gap-2 rounded-2xl border border-white/60 bg-white/80
-        p-2 md:px-3 md:py-1.5 text-sm text-slate-700 backdrop-blur
-        transition hover:-translate-y-[1px] hover:shadow-[0_10px_30px_rgba(2,6,23,0.06)]
-      "
-    >
-      {/* Bigger icon on mobile; slightly smaller on md+ */}
-      <Icon className="h-5 w-5 md:h-4 md:w-4" />
-
-      {/* Hide the text label on mobile, show from md+ */}
-      <span className="hidden md:inline">{label}</span>
-    </a>
-  );
-
   return (
     <Container>
-      <Section
-        title="Contact"
-        description="Send a message and I’ll get back quickly."
-      >
+      <Section title="Contact" description="Send a message and I’ll get back quickly.">
         <div className="grid gap-10 md:grid-cols-2">
           {/* Form */}
           <form
@@ -125,7 +126,9 @@ export default function ContactPage() {
 
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium tracking-tight text-slate-800">Name</label>
+              <label className="block text-sm font-medium tracking-tight text-slate-800">
+                Name
+              </label>
               <div className="mt-1 flex items-center gap-2 rounded-2xl border border-slate-300 bg-white/95 px-3 py-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/50">
                 <User size={16} className="text-slate-500" />
                 <input
@@ -140,7 +143,9 @@ export default function ContactPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium tracking-tight text-slate-800">Email</label>
+              <label className="block text-sm font-medium tracking-tight text-slate-800">
+                Email
+              </label>
               <div className="mt-1 flex items-center gap-2 rounded-2xl border border-slate-300 bg-white/95 px-3 py-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/50">
                 <Mail size={16} className="text-slate-500" />
                 <input
@@ -156,7 +161,9 @@ export default function ContactPage() {
 
             {/* Message */}
             <div>
-              <label className="block text-sm font-medium tracking-tight text-slate-800">Message</label>
+              <label className="block text-sm font-medium tracking-tight text-slate-800">
+                Message
+              </label>
               <div className="mt-1 flex items-start gap-2 rounded-2xl border border-slate-300 bg-white/95 px-3 py-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/50">
                 <MessageSquare size={16} className="mt-2 text-slate-500" />
                 <textarea
@@ -167,7 +174,9 @@ export default function ContactPage() {
                   {...register('message')}
                 />
               </div>
-              {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>}
+              {errors.message && (
+                <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>
+              )}
             </div>
 
             <div className="pt-2">
@@ -182,10 +191,15 @@ export default function ContactPage() {
           {/* Direct + Social */}
           <div className="space-y-6">
             <div className="rounded-2xl border border-white/60 bg-white/80 p-6 shadow-[0_10px_30px_rgba(2,6,23,0.06)] backdrop-blur">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Direct</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Direct
+              </div>
               <div className="mt-3 space-y-3 text-[15px] leading-6 text-slate-700">
                 <div className="flex items-center justify-between">
-                  <a className="hover:underline underline-offset-2" href={`mailto:${CONTACT.email}`}>
+                  <a
+                    className="hover:underline underline-offset-2"
+                    href={`mailto:${CONTACT.email}`}
+                  >
                     {CONTACT.email}
                   </a>
                   <button
@@ -213,12 +227,22 @@ export default function ContactPage() {
             </div>
 
             <div className="rounded-2xl border border-white/60 bg-white/80 p-6 shadow-[0_10px_30px_rgba(2,6,23,0.06)] backdrop-blur">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Social</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Social
+              </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 <SocialLink href={CONTACT.linkedin} label="LinkedIn" Icon={Linkedin} />
                 <SocialLink href={CONTACT.github} label="GitHub" Icon={Github} />
-                <SocialLink href="https://www.hackerrank.com/profile/nikhiljp_skj" label="HackerRank" Icon={Code2} />
-                <SocialLink href="https://leetcode.com/u/nikhiljp/" label="LeetCode" Icon={SquareCode} />
+                <SocialLink
+                  href="https://www.hackerrank.com/profile/nikhiljp_skj"
+                  label="HackerRank"
+                  Icon={Code2}
+                />
+                <SocialLink
+                  href="https://leetcode.com/u/nikhiljp/"
+                  label="LeetCode"
+                  Icon={SquareCode}
+                />
               </div>
             </div>
           </div>
