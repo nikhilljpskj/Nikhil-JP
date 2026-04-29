@@ -184,6 +184,7 @@ export default function ContactForm() {
               </button>
             </div>
             <div className="text-slate-600">{CONTACT.location}</div>
+            
           </div>
         </div>
 
