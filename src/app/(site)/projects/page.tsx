@@ -85,7 +85,7 @@ function ProjectActions({ project }: { project: Project }) {
           href={project.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-indigo-50 hover:text-indigo-700"
+          className="inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-600"
         >
           Open live <ArrowUpRight size={15} />
         </a>
@@ -95,7 +95,7 @@ function ProjectActions({ project }: { project: Project }) {
           href={project.repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-indigo-200 hover:text-indigo-600"
         >
           <Github size={15} /> Source
         </a>
@@ -122,24 +122,24 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
   return (
     <div
-      className="fixed inset-0 z-[80] bg-slate-950/70 p-3 backdrop-blur-md md:p-6"
+      className="fixed inset-0 z-[80] bg-slate-950/35 p-3 backdrop-blur-md md:p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="project-modal-title"
       onMouseDown={onClose}
     >
       <div
-        className="mx-auto flex max-h-[calc(100vh-1.5rem)] max-w-7xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 shadow-[0_35px_120px_rgba(2,6,23,0.55)] md:max-h-[calc(100vh-3rem)]"
+        className="mx-auto flex max-h-[calc(100vh-1.5rem)] max-w-7xl flex-col overflow-hidden rounded-[2rem] border border-white/80 bg-white shadow-[0_35px_120px_rgba(15,23,42,0.28)] md:max-h-[calc(100vh-3rem)]"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4 md:px-6">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-200 bg-white/90 px-5 py-4 backdrop-blur md:px-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">
               {project.href ? 'Live project' : 'Project detail'}
             </p>
             <h2
               id="project-modal-title"
-              className="mt-1 text-2xl font-semibold tracking-tight text-white md:text-4xl"
+              className="mt-1 text-2xl font-semibold tracking-tight text-slate-950 md:text-4xl"
             >
               {project.title}
             </h2>
@@ -148,34 +148,34 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             type="button"
             onClick={onClose}
             aria-label="Close project details"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white transition hover:bg-white/15"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
           >
             <X size={20} />
           </button>
         </div>
 
         <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[1.45fr_0.8fr]">
-          <div className="bg-slate-900/70 p-3 md:p-5">
+          <div className="bg-slate-50 p-3 md:p-5">
             <ProjectPreview project={project} />
           </div>
 
-          <aside className="space-y-6 border-t border-white/10 p-5 md:p-6 lg:border-l lg:border-t-0">
+          <aside className="space-y-6 border-t border-slate-200 bg-white p-5 md:p-6 lg:border-l lg:border-t-0">
             <div>
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-400">
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
                 <Layers3 size={16} /> Details
               </div>
-              <p className="mt-3 text-base leading-8 text-slate-200">{project.description}</p>
+              <p className="mt-3 text-base leading-8 text-slate-700">{project.description}</p>
             </div>
 
             <div>
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-400">
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
                 <Code2 size={16} /> Tech Used
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {project.tech.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm font-medium text-slate-100"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-700"
                   >
                     {tech}
                   </span>
@@ -183,13 +183,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Category
               </div>
-              <div className="mt-2 text-lg font-semibold text-white">{project.tag}</div>
+              <div className="mt-2 text-lg font-semibold text-slate-950">{project.tag}</div>
               {project.href && (
-                <div className="mt-1 truncate text-sm text-slate-400">{cleanUrl(project.href)}</div>
+                <div className="mt-1 truncate text-sm text-slate-500">{cleanUrl(project.href)}</div>
               )}
             </div>
 
