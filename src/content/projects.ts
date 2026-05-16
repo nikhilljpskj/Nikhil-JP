@@ -5,10 +5,11 @@ export const PROJECTS: Project[] = [
   {
     title: 'ElectoralNews',
     description:
-      'Production-grade election news portal with a dual-layer architecture: a fast, SEO-first public website covering breaking news and live election results, plus a full-featured CMS supporting 5-tier RBAC, RSS ingestion pipeline, advertiser self-serve portal, and dynamic sitemaps — all on a custom PHP MVC framework.',
-    tech: ['PHP 8.1', 'Custom MVC', 'MySQL 8', 'Vanilla JS', 'CI/CD'],
+      'Enterprise-grade political news platform delivering real-time election results, breaking stories, and deep editorial coverage. Dual-layer architecture pairs a high-traffic SEO-first public portal with a powerful multi-role CMS — featuring live seat-tally dashboards, automated Python-driven news ingestion, advertiser self-serve portals, and CI/CD-deployed infrastructure.',
+    tech: ['PHP 8.1', 'Python', 'MySQL 8', 'Vanilla JS', 'CI/CD'],
     tag: 'Web',
     href: 'https://electoralnews.com/',
+    image: '/projects/electoralnews.png',
   },
   {
     title: 'QuoteCraft',
