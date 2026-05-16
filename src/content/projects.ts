@@ -3,6 +3,22 @@ import type { Project } from '@/components/ui/project-card';
 
 export const PROJECTS: Project[] = [
   {
+    title: 'ElectoralNews',
+    description:
+      'Production-grade election news portal with a dual-layer architecture: a fast, SEO-first public website covering breaking news and live election results, plus a full-featured CMS supporting 5-tier RBAC, RSS ingestion pipeline, advertiser self-serve portal, and dynamic sitemaps — all on a custom PHP MVC framework.',
+    tech: ['PHP 8.1', 'Custom MVC', 'MySQL 8', 'Vanilla JS', 'CI/CD'],
+    tag: 'Web',
+    href: 'https://electoralnews.com',
+  },
+  {
+    title: 'QuoteCraft',
+    description:
+      'Freemium SaaS web app for freelancers and agencies to instantly generate accurate project cost estimates. Features a multi-step pricing engine, 9 project types, 16 feature add-ons, and client-side PDF/DOCX/XLSX export — with Supabase auth, usage tracking, and a freemium quota model.',
+    tech: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Supabase', 'jsPDF'],
+    tag: 'Tools',
+    href: 'https://quote-craft-theta.vercel.app/',
+  },
+  {
     title: 'Mobiforce',
     description:
       'HR consulting website for a France-based heavy industry firm. Modern Next.js front-end, Node/Express backend, optimized for clarity and speed.',
