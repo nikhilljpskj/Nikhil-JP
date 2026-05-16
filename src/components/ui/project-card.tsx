@@ -63,9 +63,7 @@ function ProjectPreview({ p }: { p: Project }) {
 export default function ProjectCard({ p }: { p: Project }) {
   return (
     <div className="group h-full">
-      {/* Gradient border ring on hover */}
-      <div className="relative h-full rounded-2xl bg-gradient-to-br from-indigo-500/0 via-blue-500/0 to-sky-400/0 p-[1px] transition-all duration-300 group-hover:from-indigo-500/40 group-hover:via-blue-500/30 group-hover:to-sky-400/40">
-        <Card className="h-full">
+        <Card className="h-full transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_50px_rgba(15,23,42,0.10)]">
           <CardBody className="flex h-full flex-col p-4 sm:p-5">
             {/* Preview thumbnail */}
             <ProjectPreview p={p} />
@@ -83,16 +81,16 @@ export default function ProjectCard({ p }: { p: Project }) {
             </div>
 
             {/* Description */}
-            <p className="mt-2.5 text-sm leading-[1.65] text-slate-600 line-clamp-3">
+            <p className="mt-2.5 text-sm leading-[1.65] text-slate-600 line-clamp-2">
               {p.description}
             </p>
 
             {/* Tech badges */}
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-3 flex flex-nowrap gap-1.5 overflow-hidden">
               {p.tech.map((t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-[3px] text-[11px] font-medium text-slate-600"
+                  className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-[3px] text-[11px] font-medium text-slate-600"
                 >
                   {t}
                 </span>
@@ -129,7 +127,6 @@ export default function ProjectCard({ p }: { p: Project }) {
             </div>
           </CardBody>
         </Card>
-      </div>
     </div>
   );
 }
