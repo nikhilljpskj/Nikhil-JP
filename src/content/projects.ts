@@ -8,7 +8,7 @@ export const PROJECTS: Project[] = [
       'Production-grade election news portal with a dual-layer architecture: a fast, SEO-first public website covering breaking news and live election results, plus a full-featured CMS supporting 5-tier RBAC, RSS ingestion pipeline, advertiser self-serve portal, and dynamic sitemaps — all on a custom PHP MVC framework.',
     tech: ['PHP 8.1', 'Custom MVC', 'MySQL 8', 'Vanilla JS', 'CI/CD'],
     tag: 'Web',
-    href: 'https://electoralnews.com',
+    href: 'https://electoralnews.com/',
   },
   {
     title: 'QuoteCraft',
