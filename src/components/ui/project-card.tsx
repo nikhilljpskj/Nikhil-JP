@@ -8,18 +8,20 @@ export type Project = {
   tech: string[];
   href?: string;
   repo?: string;
-  tag: 'Web' | 'ML' | 'Tools';
+  tag: 'Web' | 'Mobile' | 'ML' | 'Tools';
   image?: string;
 };
 
 const TAG_STYLES: Record<Project['tag'], string> = {
   Web: 'bg-indigo-500/90 text-white',
+  Mobile: 'bg-emerald-500/90 text-white',
   ML: 'bg-violet-500/90 text-white',
   Tools: 'bg-sky-500/90 text-white',
 };
 
 const PLACEHOLDER_GRADIENTS: Record<Project['tag'], string> = {
   Web: 'from-indigo-900 via-slate-800 to-slate-900',
+  Mobile: 'from-emerald-900 via-slate-800 to-slate-900',
   ML: 'from-violet-900 via-slate-800 to-slate-900',
   Tools: 'from-sky-900 via-slate-800 to-slate-900',
 };

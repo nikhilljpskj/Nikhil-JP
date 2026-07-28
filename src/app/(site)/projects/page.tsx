@@ -5,6 +5,8 @@ import type { Project } from '@/components/ui/project-card';
 import { PROJECTS } from '@/content/projects';
 import {
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
   Code2,
   ExternalLink,
   Filter,
@@ -17,7 +19,8 @@ import {
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 
-const TAGS = ['All', 'Web', 'ML', 'Tools'] as const;
+const TAGS = ['All', 'Web', 'Mobile', 'ML', 'Tools'] as const;
+const PROJECTS_PER_PAGE = 15;
 
 function cleanUrl(url: string) {
   return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -203,11 +206,18 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
 export default function ProjectsPage() {
   const [tag, setTag] = useState<(typeof TAGS)[number]>('All');
+  const [page, setPage] = useState(1);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const items = useMemo(
     () => (tag === 'All' ? PROJECTS : PROJECTS.filter((project) => project.tag === tag)),
     [tag],
   );
+  const pageCount = Math.max(1, Math.ceil(items.length / PROJECTS_PER_PAGE));
+  const currentPage = Math.min(page, pageCount);
+  const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
+  const visibleItems = items.slice(startIndex, startIndex + PROJECTS_PER_PAGE);
+  const visibleStart = items.length === 0 ? 0 : startIndex + 1;
+  const visibleEnd = Math.min(startIndex + visibleItems.length, items.length);
 
   const liveCount = PROJECTS.filter((project) => project.href).length;
 
@@ -240,14 +250,18 @@ export default function ProjectsPage() {
         <section className="sticky top-[73px] z-20 mt-6 border-y border-slate-200 bg-white/90 py-3 backdrop-blur">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
-              <Filter size={17} /> Showing {items.length} project{items.length === 1 ? '' : 's'}
+              <Filter size={17} /> Showing {visibleStart}-{visibleEnd} of {items.length} project
+              {items.length === 1 ? '' : 's'}
             </div>
             <div className="flex flex-wrap gap-2">
               {TAGS.map((item) => (
                 <button
                   key={item}
                   type="button"
-                  onClick={() => setTag(item)}
+                  onClick={() => {
+                    setTag(item);
+                    setPage(1);
+                  }}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     tag === item
                       ? 'bg-slate-950 text-white'
@@ -262,7 +276,7 @@ export default function ProjectsPage() {
         </section>
 
         <section className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
-          {items.map((project, index) => (
+          {visibleItems.map((project, index) => (
             <button
               key={project.title}
               type="button"
@@ -271,7 +285,7 @@ export default function ProjectsPage() {
             >
               <div className="flex items-center gap-3 md:block">
                 <span className="text-sm font-semibold text-slate-400">
-                  {String(index + 1).padStart(2, '0')}
+                  {String(startIndex + index + 1).padStart(2, '0')}
                 </span>
                 <span className="rounded-full border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 md:mt-3 md:inline-flex">
                   {project.tag}
@@ -298,6 +312,52 @@ export default function ProjectsPage() {
             </button>
           ))}
         </section>
+
+        {pageCount > 1 && (
+          <nav
+            className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+            aria-label="Project pagination"
+          >
+            <div className="text-sm font-medium text-slate-500">
+              Page {currentPage} of {pageCount}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setPage((value) => Math.max(1, value - 1))}
+                disabled={currentPage === 1}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:cursor-not-allowed disabled:opacity-40"
+                aria-label="Previous page"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  type="button"
+                  onClick={() => setPage(pageNumber)}
+                  className={`h-10 min-w-10 rounded-full px-3 text-sm font-semibold transition ${
+                    currentPage === pageNumber
+                      ? 'bg-slate-950 text-white'
+                      : 'border border-slate-200 bg-white text-slate-700 hover:border-indigo-200 hover:text-indigo-600'
+                  }`}
+                  aria-current={currentPage === pageNumber ? 'page' : undefined}
+                >
+                  {pageNumber}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setPage((value) => Math.min(pageCount, value + 1))}
+                disabled={currentPage === pageCount}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:cursor-not-allowed disabled:opacity-40"
+                aria-label="Next page"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </nav>
+        )}
 
         <section className="mt-8 flex flex-col gap-3 border border-slate-200 bg-slate-950 px-5 py-4 text-white md:flex-row md:items-center md:justify-between">
           <div>
