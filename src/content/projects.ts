@@ -38,12 +38,22 @@ export const PROJECTS: Project[] = [
     href: 'https://vowdreams.com',
   },
   {
-    title: 'Global-Ecom',
+    title: 'Motsto',
     description:
       'Full-stack enterprise e-commerce platform with JWT auth, product and inventory CRUD, order processing, merchant dashboards, analytics, and CMS tools.',
     tech: ['Next.js 16', 'React 19', 'NestJS', 'Prisma', 'MySQL'],
     image: '/projects/global-ecom.jpg',
     tag: 'Web',
+    href: 'https://motsto.com/',
+  },
+  {
+    title: 'Motsto Mobile App',
+    description:
+      'React Native mobile app for the Motsto e-commerce platform, connected to the same NestJS backend as the web app for shared auth, products, inventory, orders, and merchant workflows.',
+    tech: ['React Native', 'TypeScript', 'NestJS', 'Prisma', 'MySQL'],
+    image: '/projects/global-ecom.jpg',
+    tag: 'Web',
+    href: 'https://motsto.com/',
   },
   {
     title: 'Kerala Congress (J)',
