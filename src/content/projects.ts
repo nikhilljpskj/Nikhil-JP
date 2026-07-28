@@ -7,7 +7,7 @@ export const PROJECTS: Project[] = [
     description:
       'Enterprise-grade political news platform delivering real-time election results, breaking stories, and deep editorial coverage. Dual-layer architecture pairs a high-traffic SEO-first public portal with a powerful multi-role CMS — featuring live seat-tally dashboards, automated Python-driven news ingestion, advertiser self-serve portals, and CI/CD-deployed infrastructure.',
     tech: ['PHP 8.1', 'Python', 'MySQL 8', 'Vanilla JS', 'CI/CD'],
-    tag: 'Mobile',
+    tag: 'Web',
     href: 'https://electoralnews.com/',
     image: '/projects/electoralnews.png',
   },
@@ -52,8 +52,16 @@ export const PROJECTS: Project[] = [
       'React Native mobile app for the Motsto e-commerce platform, connected to the same NestJS backend as the web app for shared auth, products, inventory, orders, and merchant workflows.',
     tech: ['React Native', 'TypeScript', 'NestJS', 'Prisma', 'MySQL'],
     image: '/projects/global-ecom.jpg',
-    tag: 'Web',
+    tag: 'Mobile',
     href: 'https://motsto.com/',
+  },
+  {
+    title: 'Textile Billing Inventory',
+    description:
+      'Laravel 12 retail management system for textile shops with product variants, immutable stock ledger, GST billing, purchases, sales, returns, invoice printing, PDF downloads, and export-ready reports.',
+    tech: ['Laravel 12', 'PHP 8.2', 'MySQL', 'Blade', 'Bootstrap 5'],
+    tag: 'Web',
+    href: 'https://lightgray-lobster-555328.hostingersite.com/',
   },
   {
     title: 'Kerala Congress (J)',
